@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+{%load static%}
+{% load staticfiles %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Garagge Acevedo</title>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  <style type="text/css">
+     body {
+
+    background-color: black;
+
+    }
+  input[type=submit] {
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+  }
+    
+  </style>
+</head>
+<body>
+	{% include 'app/header.html' %}
+  {% if user.is_authenticated %}
+<section id="agregar">
+    <div class="container">
+      <h2 class="text-center text-uppercase text-secondary mb-0">Garagge Acevedo</h2>
+            <hr class="star-dark mb-5">
+      <form method='POST' action='/add_pieza' enctype="multipart/form-data"> {% csrf_token %}
+
+        <div class="form-group">
+          <label for="exampleInputEmail1" >Número de serie</label>
+          <input type="text" class="form-control" id="exampleText" placeholder="Ingrese número de serie" name="numero_de_serie">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputEmail1" > Describa el Repuesto </label>
+          <input type="text" class="form-control" id="exampleText" placeholder="Ingrese descripción del repuesto" name="descripcion">
+        </div>
+
+        <h6>Selecciones Posibles Usos a la Pieza</h6>
+        
+        <div class="form-group">
+        
+        {% for value in USOS %}
+        <div class="form-check form-check-inline">
+
+          <input class="form-check-input" value={{value.usos}} type="checkbox" id={{value.usos}} name="usosa" >
+          <label class="form-check-label" for={{value.usos}}>{{value.usos}}</label>
+        </div>
+
+
+        {% endfor %}
+        </div>
+      <h6> Seleccione Marca del Auto</h6>
+
+        <div class="form-group">
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="marca" id="marca" value="Jaguar">Jaguar
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="marca" id="marca" value="Mercedes">Mercedes
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="marca" id="marca" value="Triumph">Triumph
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="marca" id="marca" value="Porsche">Porsche
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="marca" id="marca" value="Otro"> Otro
+          </label>
+        </div>
+
+        <h6> Seleccione Modelo del Auto </h6>
+
+
+
+        <div class = " form-group">
+          <small>Jaguar</small>
+          <br>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xj6_serie3"> xj6 serie 3
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xj40"> xj40
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xjs_87">xjs, '87 en adelante
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xjs"> xjs, previo al '87
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xk8">xk8
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="x300"> x300
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="x308"> x308
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="x350"> x350
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xj40">xj40
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="xf">xf
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="s-type">e-type
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="x-type"> s-type
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="e-type-s1"> e-type s1
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="e-type-s2"> e-type s2
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value=" e-type"> e-type s3
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="jotro">Otro
+          </label>
+          <br>
+          <small>Triumph</small>
+          <br>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="tr6">tr6
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="tr4">tr4
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="tr3">tr3
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="totro">Otro
+          </label>
+          <br>
+          <small>Porsche</small>
+          <br>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="911"> 911
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="964"> 964
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="964"> 993
+          </label>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="potro">Otro
+          </label>
+          <br>
+          <small>Mercedes</small>
+          <br>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="mb"> modelos por definir
+          </label>
+          <br>
+          <small>Otro</small>
+          <br>
+          <label class="mr-3">
+            <input type="radio" class=mr-1 name="modelo" id="modelo" value="otro">Otro
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1"> Ubicación </label>
+          <input type="text" class="form-control" id="exampleText" placeholder=" ingrese ubicación" name="ubicacion">
+        <!--</div>
+        <div class="form-group">
+        <div class="row"> -->
+        	<label for="exampleNumber">Precio</label>
+        	<input type="number"  class="form-control" id="exampleNumber" placeholder="Ingrese cuanto desea cobrar por unidad" name="precio">
+
+          <label for="stock">Stock</label>
+          <input type="number"  class="form-control" id="stock" placeholder="Ingrese unidades en paquete" name="stock">
+
+        </div>	
+        <div class="form-group">
+          <label for="imagen"> Subir imagen</label>
+          <input type="file" class="form-control-file" name="imagen" id="imagen">
+        </div>
+        <input type="submit">
+      </form>
+    </div>
+<div width="100%">
+  {% else %}
+ {% endif %}
+{% include 'app/footer.html' %}
+</div>
+</body>
+</html>

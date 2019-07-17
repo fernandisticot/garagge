@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{%load static%}
+{% load staticfiles %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Garagge Acevedo</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <style type="text/css">
+        
+        
+    </style>
+    <style type="text/css">
+        
+    </style>
+</head>
+
+<body>
+{% include 'app/header.html' %}
+{% if user.is_authenticated %}
+
+<div> 
+ <section id="lista_taller">
+        <div class="container">
+        	<h2 class="text-center text-uppercase text-secondary mb-0">Garagge Acevedo</h2>
+            <hr class="star-dark mb-5">
+            <div class="row">
+                <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+                <h1></h1>
+                <h4>Piezas</h4>
+                <table  width="4000" class="sortable table-dark table-hover">
+                    <thead>
+                        <tr>
+                        	<th>Pieza</th>
+                        	<th>numero de serie</th>
+                            <th>Cantidad Usada</th>
+                        	<th>Precio</th>
+                          <th>Eliminar </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for value in piezasacobrar %}
+                    		<tr>
+                    			<td>{{value.descripcion}}{{value.marca}}{{value.modelo}}</td>
+                    			<td>{{value.numero_de_serie}}</td>
+                                <td>{{value.cantidad}}</td>
+                    			<td>{{value.precio}}</td>
+                          <td>
+                            <form method='POST' action="/Eliminarcobropieza">{% csrf_token %}
+                            <button type="submit" name="id" class="btn btn-danger" value="{{value.pk}}">Eliminar</button>
+                          </form>
+                          </td>
+                    		</tr>
+                    {% endfor %}
+                	</tbody>
+                </table>
+                <br>
+                	
+                	<h4>Horas Trabajadas para {{mitrabajo.auto.cliente.nombre}} {{mitrabajo.auto.cliente.apellido}} </h4>
+                	<br>
+                	<br>
+                    
+                    <table  width="4000" class="sortable table-dark table-hover">
+                    	<thead>
+                    		<th>Fecha de Ingreso</th>
+                   			<th>Número de Horas</th>
+                            <th>Precio Hora</th>
+                            <th>Eliminar </th>
+                   		</thead>
+                		<tbody>
+                            {% for val in horas %}
+                			<tr><td>{{val.fecha}}</td>
+                			<td>{{val.cantidad}}</td>
+                            <td>{{val.precio}}</td>
+                            <td> <form method='POST' action="/Eliminarcobrohora">{% csrf_token %}
+                            <button type="submit" name="idh" class="btn btn-danger" value="{{val.pk}}">Eliminar</button>
+                          </form></td>
+                          </tr>
+                            {% endfor %}
+                		</tbody>
+               		 </table>
+                  <div class="container">
+                    <h5> Total: {{supertotal}}</h5>
+                    <hr class="star-dark mb-5">
+                    <h5>IVA: {{IVA}}</h5>
+                    <hr class="star-dark mb-5">
+                    <h5>Total + IVA : {{megatotal}}</h5>
+                  </div>
+            <hr class="star-dark mb-5">
+            <h4>Depositos</h4>
+                  <table  width="4000" class="sortable table-dark table-hover">
+                    <thead>
+                      <tr>
+                        <th> Fecha</th>
+                        <th> Monto</th>
+                        <th>Eliminar</th>
+                      </tr>
+                    </thead>
+
+                    <tbody> 
+                      {% for valor in depositosatrabajo %}
+                        <tr>
+                          <td>{{valor.fecha}}</td>
+                          <td>{{valor.monto}}</td>
+                          <td><form method='POST' action="/Eliminardeposito">{% csrf_token %}
+                            <button type="submit" name="idd" class="btn btn-danger" value="{{valor.pk}}">Eliminar</button>
+                          </form></td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+<h5> Adeudado = {{adeudado}}</h5>
+    </div>
+    </div>
+    </section>
+  </div>
+
+
+        <form class="form-inline" onsubmit="openModal()" id="myForm" action="terminar_trabajo">
+          <button type="submit" value="{{mitrabajo.pk}}" class="btn btn-success">Terminar Trabajo</button>
+        </form>
+  
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">¿Desea terminar este trabajo?</h4>
+      </div>
+      <div class="modal-body">
+        <p>Aún son debidos {{adeudado}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <form action="/terminar_trabajo" method="POST">{% csrf_token %}
+        <button type="submit" id="traba" name="traba" class="btn btn-success" value="{{mitrabajo.pk}}">Terminar Trabajo</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+{% else %}
+ {% endif %}
+ {% include 'app/footer.html' %}
+
+  <!-- Bootstrap core JavaScript -->
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script>$('#myForm').on('submit', function(e){
+    $('#myModal').modal('show');
+    e.preventDefault();
+    });
+  </script>
+  </div>
+</body>
+ 
+</html>

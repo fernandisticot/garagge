@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+{%load static%}
+{% load staticfiles %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Garagge Acevedo</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <style type="text/css">
+
+        
+    </style>
+</head>
+
+<body>
+{% include 'app/header.html' %}
+{% if user.is_authenticated %}
+
+  
+<section id="lista_taller">  
+    <div class="container">
+        <form method='POST' action="/usar_pieza"> {% csrf_token %} 
+
+            <h2 class="text-center text-uppercase text-secondary mb-0">Garagge Acevedo</h2>
+            <hr class="star-dark mb-5">
+            <div class="row">
+                <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+                <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                <hr class="star-dark mb-5">
+                <table  width="4000" class="sortable table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">N° Serie</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Marca / Modelo</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Usos</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col"> Usar </th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                            {% for valor in Filtrado %}
+                            <tr>
+
+                                <td>{{valor.pieza.numero_de_serie}}  </td>
+                                <td>{{valor.pieza.descripcion}}</td>
+                                <td>{{valor.pieza.marca}} {{valor.pieza.modelo}}</td>
+                                <td>{{valor.pieza.stock}}</td>
+                                <td>{{valor.pieza.ubicacion}}   </td>
+                                <td>{{valor.uso.usos}}</td>
+                                <td>{{valor.pieza.precio}}</td>
+                                <td> <div class="form-group">
+                                    <label class="mr-3"><input type="radio" class=mr-1 name="unapieza" id="unapieza" value="{{valor.pieza.pk}}"> usar</label>
+                                    </div>
+                                </td>            
+                            </tr>
+                            {% endfor %}
+                        </div>
+                    
+                    </tbody>
+                </table>
+            </div>
+ <br>
+    <div class="form-group">
+    <input type="number" class="form-control" min="1" placeholder="cantidad" name="inputNumber" id="exampleNumber">
+    </div> 
+    <br> 
+
+            <h2 class="text-center text-uppercase text-secondary mb-0">Garagge Acevedo</h2>
+            <hr class="star-dark mb-5">
+            <div class="row">
+                <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+                <input class="form-control" id="myInputtwo" type="text" placeholder="Search..">
+                <hr class="star-dark mb-5">
+                <table  width="4000" class="sortable table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Auto</th>
+                            <th scope="col">Fecha Inicio</th>
+                            <th scope="col">Terminado</th>
+                            <th scope="col">Usar pieza</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody id="myTabletwo">
+                    {% for value in trabajos %}
+                    
+                        <tr>
+
+                            <td>{{value.auto.cliente.nombre}} {{value.auto.cliente.apellido}}   </td>
+                            <td>{{value.auto.marca}} {{value.auto.modelo}}   </td>
+                            <td>{{value.fecha_inicio}}   </td>
+                            <td>{{value.terminado}}</td>
+                            <td><div class="form-group">
+                                <label class="mr-3">
+                                    <button type="submit" name="traba" id="traba" value="{{value.pk}}" class="btn btn-success">Usar Pieza</button>
+                                </label>
+                                </div>
+                            </td>
+                        </tr>
+                       
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</section>
+<br>
+<!--{% for valor in Filtrado %}
+<div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="card-img-top" src="http://placehold.it/700x400" alt="">
+              <div class="card-body">
+                <h4 class="card-title">
+                  {{valor.pieza.descripcion}}..{{valor.pieza.marca}}..{{valor.pieza.modelo}}
+                </h4>
+                <h5>${{valor.pieza.precio}}</h5>
+                <p class="card-text" src="{% static 'images/texto.html' %}" >Usos posibles : {{valor.uso.usos}} </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">{{value.pieza.ubicacion}}</small>
+              </div>
+            </div>
+</div>
+
+{% endfor %} -->
+{% else %}
+ {% endif %}
+ {% include 'app/footer.html' %}
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+   <!-- search in tableone -->
+  <script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+<!-- search in tabletwo-->
+  <script>
+$(document).ready(function(){
+  $("#myInputtwo").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTabletwo tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+</body>
+ 
+</html>
